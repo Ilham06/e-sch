@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\ApiResponseEnum;
+use App\Http\Requests\CreateRoleRequest;
 use App\Repositories\RoleRepository;
 use App\SendResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -20,21 +24,26 @@ class RoleController extends Controller
 
     public function getAll()
     {
+        $roles = $this->roleRepository->getAll();
+        return $this->sendResponse($roles, ApiResponseEnum::Success->description());
+    }
+
+    public function store(CreateRoleRequest $request)
+    {
         try {
-            $roles = $this->roleRepository->getAll();
-            return $this->sendResponse($roles, 'Sukses mendapatkan semua data role', 200);
+            DB::beginTransaction();
+            $store = $this->roleRepository->store($request->all());
+            DB::commit();
+            return $this->sendResponse($store, ApiResponseEnum::Created->description());
         } catch (Exception $e) {
-            return $this->sendResponse(null, $e->getMessage(), $e->getCode());
+            DB::rollBack();
+            return $this->sendResponse($e->getMessage(), ApiResponseEnum::InternalError->description());
         }
     }
 
-    public function store(Request $request)
+    public function get(String $id)
     {
-        try {
-            $store = $this->roleRepository->store($request->all());
-            return $this->sendResponse($store, 'Sukses membuat data role', 200);
-        } catch (Exception $e) {
-            return $this->sendResponse(null, $e->getMessage(), 400);
-        }
+        $roles = $this->roleRepository->getById($id);
+        return $this->sendResponse($roles, ApiResponseEnum::Success->description());
     }
 }

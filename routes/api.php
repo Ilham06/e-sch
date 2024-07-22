@@ -10,5 +10,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::get('role', [RoleController::class, 'getAll'])->name('role.getall')->middleware('jwt.auth');
-Route::post('role', [RoleController::class, 'store'])->name('role.store');
+
+
+Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::get('role', [RoleController::class, 'getAll']);
+    Route::post('role', [RoleController::class, 'store']);
+    Route::get('role/{id}', [RoleController::class, 'get']);
+});
