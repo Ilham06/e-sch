@@ -29,6 +29,25 @@ class RoleController extends Controller
         return $this->sendResponse($roles, ApiResponseEnum::Success->description());
     }
 
+    public function getPagination(Request $request)
+    {
+        $page = $request->get('page');
+        $per_page = $request->get('per_page');
+        $keyword = $request->get('keyword');
+
+        $roles = $this->roleRepository->getPaginate($per_page, $keyword);
+        return $this->sendResponse($roles, ApiResponseEnum::Success->description());
+    }
+
+    public function getAllPermissions(Request $request)
+    {
+        $per_page = $request->get('per_page');
+        $keyword = $request->get('keyword');
+
+        $permissions = $this->roleRepository->getPermissions($per_page, $keyword);
+        return $this->sendResponse($permissions, ApiResponseEnum::Success->description());
+    }
+
     public function store(CreateRoleRequest $request)
     {
         try {

@@ -7,12 +7,11 @@ use Spatie\Permission\Models\Role;
 
 class RoleRepository
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
+    protected $model;
+
+    public function __construct(Role $model)
     {
-        //
+        $this->model = $model->orderBy('created_at', 'desc')->with('permissions');
     }
 
     public function getAll()
@@ -20,14 +19,27 @@ class RoleRepository
         return Role::with('permissions')->get();
     }
 
-    public function getPaginate()
+    public function getPaginate($per_page, $keyword)
     {
-        return Role::with('permissions')->paginate(10);
+        $roles = $this->model;
+        $roles = $roles->when($keyword, function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%');
+        })->paginate($per_page);
+
+        return $roles;
     }
 
-    function getPermissions()
+    function getPermissions($per_page, $keyword)
     {
-        return Permission::paginate(10);
+        $permissions = Permission::orderBy('name', 'asc');
+        $permissions = $permissions->when($keyword, function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%');
+        });
+
+        if ($per_page) {
+            return $permissions->paginate($per_page);
+        }
+        return $permissions->get();
     }
 
     function store($data)
