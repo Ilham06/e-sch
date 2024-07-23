@@ -15,12 +15,13 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            'name' => 'Administrator 1',
-            'email' => 'admin1@mail.com',
+            'name' => 'Administrator 2',
+            'email' => 'admin2@mail.com',
+            'code' => '20009',
             'password' => Hash::make('password'),
         ];
 
         $user = User::create($data);
-        // $user->assignRole('administrator');
+        $user->assignRole('administrator');
     }
 }

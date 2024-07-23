@@ -2,8 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class RoleRepository
 {
@@ -44,7 +45,7 @@ class RoleRepository
 
     function store($data)
     {
-        $role = Role::create(['name' => $data['name']]);
+        $role = Role::create(['name' => $data['name'], 'uuid' => Str::uuid(), 'guard_name' => 'web']);
         $data['permissions'] ? $role->syncPermissions($data['permissions']) : null;
 
         return $role;
