@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,10 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('major/{id}', [MajorController::class, 'get']);
     Route::put('major/{id}', [MajorController::class, 'update']);
     Route::delete('major/{id}', [MajorController::class, 'delete']);
+
+    Route::post('subject', [SubjectController::class, 'store']);
+    Route::get('subject', [SubjectController::class, 'getAll']);
+    Route::get('subject/{id}', [SubjectController::class, 'get']);
+    Route::put('subject/{id}', [SubjectController::class, 'update']);
+    Route::delete('subject/{id}', [SubjectController::class, 'delete']);
 });
