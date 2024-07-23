@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\MajorController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -26,4 +27,10 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('students', [UserController::class, 'getAllStudent']);
     Route::get('teachers', [UserController::class, 'getAllTeacher']);
     Route::get('administrators', [UserController::class, 'getAllAdmin']);
+
+    Route::post('major', [MajorController::class, 'store']);
+    Route::get('major', [MajorController::class, 'getAll']);
+    Route::get('major/{id}', [MajorController::class, 'get']);
+    Route::put('major/{id}', [MajorController::class, 'update']);
+    Route::delete('major/{id}', [MajorController::class, 'delete']);
 });
