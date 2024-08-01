@@ -16,7 +16,7 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {
-    Route::get('role', [RoleController::class, 'getAll'])->middleware(['permission:VIEW_ROLE']);
+    Route::get('role', [RoleController::class, 'getAll']);
     Route::post('role', [RoleController::class, 'store']);
     Route::put('role/{id}', [RoleController::class, 'update']);
     Route::delete('role/{id}', [RoleController::class, 'delete']);
@@ -28,6 +28,9 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('students', [UserController::class, 'getAllStudent']);
     Route::get('teachers', [UserController::class, 'getAllTeacher']);
     Route::get('administrators', [UserController::class, 'getAllAdmin']);
+    Route::get('user/{id}', [UserController::class, 'get']);
+    Route::put('user/{id}', [UserController::class, 'update']);
+    Route::delete('user/{id}', [UserController::class, 'delete']);
 
     Route::post('major', [MajorController::class, 'store']);
     Route::get('major', [MajorController::class, 'getAll']);

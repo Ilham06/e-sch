@@ -15,6 +15,7 @@ class SubjectRepository
 
     public function getAll($per_page, $keyword, $is_major, $major_id)
     {
+        
         $subjects = $this->model->with('major');
 
         $subjects = $this->model->when($keyword, function ($query) use ($keyword) {
@@ -22,7 +23,7 @@ class SubjectRepository
         });
 
         $subjects = $this->model->when($is_major, function ($query) use ($is_major) {
-            $query->where('is_major_subject', $is_major);
+            $query->where('is_major_subject', filter_var($is_major, FILTER_VALIDATE_BOOLEAN));
         });
 
         $subjects = $this->model->when($major_id, function ($query) use ($major_id) {

@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         
         $credentials = request(['email', 'password']);
-        $user = User::whereEmail($credentials['email'])->first();
+        $user = User::whereEmail($credentials['email'])->with('roles.permissions')->first();
         if (!$user) {
             return response()->json(['error' => 'Email tidak ditemukan'], 401);
         }
@@ -42,6 +42,7 @@ class AuthController extends Controller
         // return $this->respondWithToken($token, $refreshToken, 86400);
 
         return response()->json([
+            'user' => $user,
             'access_token' => $token,
         ]);
     }

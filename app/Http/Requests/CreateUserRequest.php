@@ -24,8 +24,9 @@ class CreateUserRequest extends BaseFormRequest
         return [
             'name' => 'required',
             'email' => 'required|unique:users,email',
-            'code' => 'required',
-            'role' => 'required'
+            'code' => 'required|unique:users,code',
+            'role' => 'required',
+            'major_id' => 'nullable'
         ];
     }
 }

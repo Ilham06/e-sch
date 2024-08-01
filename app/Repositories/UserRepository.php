@@ -26,7 +26,7 @@ class UserRepository
 
     public function getUsers($per_page, $keyword, $role)
     {
-        $student = $this->model->role($role);
+        $student = $this->model->role($role)->with('major');
         $student = $student->when($keyword, function ($query) use ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%');
         })->paginate($per_page);
@@ -41,5 +41,26 @@ class UserRepository
         $user->assignRole($data['role']);
 
         return $user;
+    }
+
+    function getById($id)
+    {
+        return $this->model->with('major')->find($id);
+    }
+
+    function update($data, $id)
+    {
+        $user = $this->model->find($id);
+        $user = $user->update($data);
+
+        return $user;
+    }
+
+    public function delete($id)
+    {
+        $subject = $this->model->find($id);
+        $subject->delete();
+
+        return true;
     }
 }

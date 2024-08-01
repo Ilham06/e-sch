@@ -22,7 +22,7 @@ class RoleRepository
 
     public function getPaginate($per_page, $keyword)
     {
-        $roles = $this->model;
+        $roles = $this->model->withCount('users');
         $roles = $roles->when($keyword, function ($query) use ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%');
         })->paginate($per_page);
