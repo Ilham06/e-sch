@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -43,4 +44,10 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('subject/{id}', [SubjectController::class, 'get']);
     Route::put('subject/{id}', [SubjectController::class, 'update']);
     Route::delete('subject/{id}', [SubjectController::class, 'delete']);
+
+    Route::get('class', [SchoolClassController::class, 'getAll']);
+    Route::post('class', [SchoolClassController::class, 'store']);
+    Route::get('class/{id}', [SchoolClassController::class, 'get']);
+    Route::put('class/{id}', [SchoolClassController::class, 'update']);
+    Route::delete('class/{id}', [SchoolClassController::class, 'delete']);
 });
