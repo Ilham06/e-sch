@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enum\ApiResponseEnum;
 use App\Http\Requests\CreateClassRequest;
+use App\Repositories\ScheduleRepository;
 use App\Repositories\SchoolClassRepository;
 use App\Repositories\StudentClassRepository;
 use App\Repositories\TeacherClassRepository;
@@ -19,12 +20,18 @@ class SchoolClassController extends Controller
     private SchoolClassRepository $schoolClassRepository;
     private StudentClassRepository $studentClassRepository;
     private TeacherClassRepository $teacherClassRepository;
+    private ScheduleRepository $scheduleRepository;
 
-    public function __construct(SchoolClassRepository $schoolClassRepository, StudentClassRepository $studentClassRepository, TeacherClassRepository $teacherClassRepository)
+    public function __construct(
+        SchoolClassRepository $schoolClassRepository, 
+        StudentClassRepository $studentClassRepository, 
+        TeacherClassRepository $teacherClassRepository, 
+        ScheduleRepository $scheduleRepository)
     {
         $this->schoolClassRepository = $schoolClassRepository;
         $this->studentClassRepository = $studentClassRepository;
         $this->teacherClassRepository = $teacherClassRepository;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     public function getAll(Request $request)
@@ -59,6 +66,8 @@ class SchoolClassController extends Controller
                     'school_class_id' => $store->id
                 ]);
             }
+
+            $this->scheduleRepository->store($store->id);
 
             DB::commit();
             return $this->sendResponse($store, ApiResponseEnum::Created->description());

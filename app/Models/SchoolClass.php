@@ -54,4 +54,14 @@ class SchoolClass extends Model
     {
         return $this->hasMany(TeacherClass::class);
     }
+
+    /**
+     * Get all of the schedules for the SchoolClass
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }

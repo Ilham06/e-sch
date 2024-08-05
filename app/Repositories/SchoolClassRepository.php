@@ -41,7 +41,7 @@ class SchoolClassRepository
 
     function getById($id)
     {
-        return $this->model->with('major', 'user', 'students', 'teachers')->find($id);
+        return $this->model->with('major', 'user', 'students.user', 'teachers.user')->find($id);
     }
 
     public function update($id, $data)
