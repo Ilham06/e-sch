@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ClassScheduleController;
 use App\Http\Controllers\MajorController;
@@ -58,4 +59,8 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('schedule/{id}', [ClassScheduleController::class, 'update']);
     Route::delete('schedule/{id}', [ClassScheduleController::class, 'delete']);
     Route::delete('schedule/clear/{schedule_id}', [ClassScheduleController::class, 'deleteAll']);
+
+    Route::get('attendance', [AttendanceController::class, 'getAttendance']);
+    Route::get('attendance/get-lesson', [AttendanceController::class, 'getAvailaableLesson']);
+    Route::post('attendance', [AttendanceController::class, 'store']);
 });
